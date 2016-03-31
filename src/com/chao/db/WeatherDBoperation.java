@@ -17,6 +17,7 @@ public class WeatherDBoperation {
 	private static final int version = 1;
 	private static WeatherDBoperation weatherDBo;
 	private SQLiteDatabase db;
+	private static final String key="b992808ccbb541a0b8693a45e04f232b";
 
 	private WeatherDBoperation(Context context) {
 		WeatherDB weatherDB = new WeatherDB(context, DBname, null, version);
@@ -60,16 +61,17 @@ public class WeatherDBoperation {
 	public void saveCity(City c) {
 		if (c != null) {
 			ContentValues v = new ContentValues();
-			v.put("province_name", c.getCityName());
-			v.put("province_code", c.getCityCode());
-			v.put("provinceId", c.getProvinceId());
-			db.insert("Province", null, v);
+			v.put("city_name", c.getCityName());
+			v.put("city_code", c.getCityCode());
+			v.put("province_id", c.getProvinceId());
+			db.insert("City", null, v);
 		}
 	}
 
 	public List<City> loadCity(int provinceId) {
 		List<City> list = new ArrayList<City>();
-		Cursor cur = db.query("City", null, "province_id = ?", new String[]{String.valueOf(provinceId)}, null, null, null);
+		Cursor cur = db.query("City", null, "province_id = ?",
+				new String[] { String.valueOf(provinceId) }, null, null, null);
 		if (cur.moveToFirst()) {
 			do {
 				City c = new City();
@@ -88,16 +90,17 @@ public class WeatherDBoperation {
 	public void saveCountry(Country c) {
 		if (c != null) {
 			ContentValues v = new ContentValues();
-			v.put("province_name", c.getCountryName());
-			v.put("province_code", c.getCountryCode());
-			v.put("cityId", c.getCityId());
+			v.put("country_name", c.getCountryName());
+			v.put("country_code", c.getCountryCode());
+			v.put("city_id", c.getCityId());
 			db.insert("Country", null, v);
 		}
 	}
 
 	public List<Country> loadCountry(int cityId) {
 		List<Country> list = new ArrayList<Country>();
-		Cursor cur = db.query("Province", null, "city_id = ?", new String[]{String.valueOf(cityId)}, null, null, null);
+		Cursor cur = db.query("Country", null, "city_id = ?",
+				new String[] { String.valueOf(cityId) }, null, null, null);
 		if (cur.moveToFirst()) {
 			do {
 				Country c = new Country();
